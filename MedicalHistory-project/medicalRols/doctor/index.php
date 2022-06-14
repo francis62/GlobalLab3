@@ -1,37 +1,51 @@
 <?php
+ob_start();
+?>
+<?php
     session_start();
     include("config.php");
     error_reporting(0);
     if(isset($_POST['submit'])){
+        
         $ret=mysqli_query($con,"SELECT * FROM doctors WHERE docEmail='".$_POST['username']."' and password='".md5($_POST['password'])."'");
         $num=mysqli_fetch_array($ret);
 
         if($num>0){
+            $_SESSION['errmsg']="Datos ingresados correctos";
+            header("Location: principalPanel.php");
             $extra="principalPanel.php";
-            $_SESSION['dlogin']=$_POST['username'];
             $_SESSION['id']=$num['id'];
-            $uip=$_SERVER['REMOTE_ADDR'];
-            $status=1;
-            $log=mysqli_query($con,"insert into doctorslog(uid,username,userip,status) values('".$_SESSION['id']."','".$_SESSION['dlogin']."','$uip','$status')");
             $host=$_SERVER['HTTP_HOST'];
             $uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
-            header("location:http://$host$uri/$extra");
+            //header("location:http://$host$uri/$extra");
             exit();
         }else{
+            $_SESSION['errmsg']="Datos ingresados incorrectos";
+            if(isset($_POST["submit"])){
+                echo '<script>alert("Usuario / Contraseñe incorrectos")</script>';
+            }
+
+            //if (!empty($_POST['username']) && !empty($_POST['password'])){
+            //    echo '<script>alert("Usuario / Contraseñe incorrectos")</script>';
+            //}
+  
+            //$_SESSION['errmsg']="Invalid username or password";
+            //$extra="../../index.php";
+            //$host  = $_SERVER['HTTP_HOST'];
+            //$uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+            //header("location:http://$host$uri/$extra");
+            //exit();
             $host  = $_SERVER['HTTP_HOST'];
-            $_SESSION['dlogin']=$_POST['username'];
-            $uip=$_SERVER['REMOTE_ADDR'];
-            $status=0;
-            mysqli_query($con,"insert into doctorslog(username,userip,status) values('".$_SESSION['dlogin']."','$uip','$status')");
-            $_SESSION['errmsg']="Invalid username or password";
             $extra="index.php";
             $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
             header("location:http://$host$uri/$extra");
             exit();
         }
+
+        ob_end_flush();
+          
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -59,11 +73,11 @@
                         <div class="mb-4">
                             <h3 class="formTitle">
                                 Ingresa a tu cuenta
-                                <span style="color:red;"><?php echo $_SESSION['errmsg']; ?><?php echo $_SESSION['errmsg']="";?></span>
                             </h3>
+                            <span style="color:red;"><?php echo htmlentities($_SESSION['errmsg']); ?><?php echo htmlentities($_SESSION['errmsg']="");?></span>
                         </div>
 
-                        <form method="post">
+                        <form action="index.php" method="post" >
                             <div class="form-input">
                                 <span><i class="fa fa-envelope"></i></span>
                                 <input name="username" type="text" placeholder="Email" required>
@@ -102,11 +116,5 @@
 		<script src="../../resources/js/main.js"></script>
 
 		<script src="../../resources/js/login.js"></script>
-		<!--<script>
-			jQuery(document).ready(function() {
-				Main.init();
-				Login.init();
-			});
-		</script>-->
     </body>
 </html>

@@ -1,4 +1,7 @@
 <?php
+ob_start();
+?>
+<?php
     session_start();
     error_reporting(0);
     include("config.php");
@@ -14,16 +17,28 @@
             $host=$_SERVER['HTTP_HOST'];
             $uri=rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
             header("location:http://$host$uri/$extra");
+            ob_end_flush();
             exit();
         }else{
+            if(isset($_POST["submit"])){
+                echo '<script>alert("Usuario / Contraseñe incorrectos")</script>';
+            }
+            /*
             $_SESSION['errmsg']="Invalid username or password";
             $extra="index.php";
             $host  = $_SERVER['HTTP_HOST'];
             $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
             header("location:http://$host$uri/$extra");
+            exit();*/
+            $extra="index.php";
+            $host  = $_SERVER['HTTP_HOST'];
+            $uri  = rtrim(dirname($_SERVER['PHP_SELF']),'/\\');
+            header("location:http://$host$uri/$extra");
+            ob_end_flush();
             exit();
         }
     }
+
 ?>
 
 <!DOCTYPE html>

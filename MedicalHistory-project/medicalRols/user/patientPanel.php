@@ -1,8 +1,5 @@
 <?php
-  session_start();
   include('config.php');
-  include('checklogin.php');
-  check_login();
 ?>
 
 <!DOCTYPE html>

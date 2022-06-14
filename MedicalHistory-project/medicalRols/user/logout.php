@@ -3,8 +3,8 @@
   
   include('config.php');
 
-  session_unset();
-
+  //session_unset();
+  session_destroy();
   $_SESSION['errmsg']="You have successfully logout";
 
 ?>

@@ -1,7 +1,7 @@
 <?php
-    error_reporting(0);
-    include('config.php');
-
+  session_start();
+  error_reporting(0);
+  include('config.php');
 ?>
 
 <!DOCTYPE html>
@@ -18,30 +18,33 @@
         <title>Medical History</title>
     </head>
     <body>
-
       <div class="container-fluid">
         <div class="row flex-nowrap">
           <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white">
             <div class="d-flex flex-column px-3 pt-2 text-white min-vh-100">
-              <a href="/" class="d-flex align-items-center justify-content-center pb-3 mb-md-0 me-m  text-decoration-none">
+              <a href="principalPanel.php" class="d-flex align-items-center justify-content-center pb-3 mb-md-0 me-m  text-decoration-none">
                 <img class="img-fluid logo" src="../../resources/images/3.png" alt="">
               </a>
               <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                 <li class="nav-item">
-                  <a href="dashboard.php" class="nav-link align-middle px-0">
+                  <a href="principalPanel.php" class="nav-link align-middle px-0">
                     <i class="fa-solid fa-house-user me-2"></i>Panel principal
                   </a>
-      
-                  <a href="addDoctor.php" class="nav-link align-middle px-0">
-                    <i class= "fa-solid fa-address-book me-2"></i>Añadir doctor
-                  </a>
-      
-                  <a href="listDoctors.php" class="nav-link align-middle px-0">
-                    <i class="fa-solid fa-calendar-days me-2"></i>Lista de doctores
+
+                  <a href="addPatient.php" class="nav-link align-middle px-0">
+                    <i class= "fa-solid fa-address-book me-2"></i>Añadir paciente
                   </a>
 
-                  <a href="doctorSearch.php" class="nav-link align-middle px-0">
-                    <i class="fa-solid fa-calendar-days me-2"></i>Buscador
+                  <a href="listPatients.php" class="nav-link align-middle px-0">
+                    <i class= "fa-solid fa-address-book me-2"></i>Lista de pacientes
+                  </a>
+
+                  <a href="patientSearch.php" class="nav-link align-middle px-0">
+                    <i class= "fa-solid fa-address-book me-2"></i>Buscador
+                  </a>
+      
+                  <a href="calendar.php" class="nav-link align-middle disabled px-0">
+                    <i class="fa-solid fa-calendar-days me-2"></i>Turnos
                   </a>
       
                   <a href="configuration.html" class="nav-link align-middle disabled px-0">
@@ -52,7 +55,7 @@
                 <li class="mt-4 mb-1">
                   <a href="index.html">
                     <button type="button" class="btn btn-primary btn-sm ps-3 pe-3 me-sm-2 buttonsNav">
-                      <a href="logout.php" class="logoutButton" style="text-decoration: none;"> 
+                      <a href="logout.php" class="logoutButton" style="text-decoration: none;">
                         Cerrar sesion
                       </a>
                     </button>     
@@ -64,7 +67,7 @@
                 <div class="d-flex align-items-center justify-content-center flex-column bd-highlight bottom-0 start-0" style="margin-top: 100%;">
                   <div class="p-2 bd-highlight align-items-center" style="padding:0 !important;">
                     <div class="card align-items-center pt-4 pb-3" style="border: none; background-color: #c8d2e6;width: 13rem !important; border-radius: 30px;">
-                    <img src="resources/images/sideBarImage.png" class="card-img-top img-fluid" style="max-width: 7rem;" alt="...">
+                    <img src="../../resources/images/sideBarImage.png" class="card-img-top img-fluid" style="max-width: 7rem;" alt="...">
                     <div class="card-body text-center text-black">
                       <h5 class="card-title">Medical History</h5>
                       <p class="card-text">medicalihistory@info.com</p>
@@ -79,7 +82,7 @@
           <div class="col py-3" style="background-color:#c8d2e6">
             <header class="navbar justify-content-start sticky-top flex-md-nowrap p-0">
               <div>
-                <h3 class="navbarText">Buscador</h3>
+                <h3 class="navbarText">Mis pacientes</h3>
               </div>
           
               <div class="topnav">
@@ -90,8 +93,8 @@
               
               <div class="dropdown d-flex flex-row-reverse">
                 <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="resources/images/profile.jpg" alt="" width="32" height="32" class="rounded-circle me-2 ms-2 border border-white border-3">
-                <strong>Admin</strong>
+                <img src="../../resources/images/profile.jpg" alt="" width="32" height="32" class="rounded-circle me-2 ms-2 border border-white border-3">
+                <strong>Natalia Moyano</strong>
                 </a>
                 <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="dropdownMenuButton1"> 
                 <li><a class="dropdown-item" href="#">Editar perfil</a></li>
@@ -102,7 +105,7 @@
                 <i class="fa-solid fa-user me-2 ms-2"></i>
                 </a>
               </div>
-            </header>
+            </header>				
             
             <div class="containerSearcher">
                 <h3>Buscar por nombre/especializacion/numero de telefono</h3>
@@ -110,7 +113,7 @@
                 <form role="form" method="post" name="search">
                     <div class="form-group">
                         <label for="doctorname">
-                            Buscar por nombre/especializacion/numero de telefono
+                            Buscar por nombre/numero de telefono
                         </label>
 
                         <input type="text" name="searchData" id="searchData" class="form-control" value="" required='true'>
@@ -124,7 +127,7 @@
                 <?php
                     if(isset($_POST['search'])){ 
 
-                        $sdata=$_POST['searchData'];
+                    $sdata=$_POST['searchData'];
                 ?>
 
                 <h4 align="center">Resultados por la busqueda de "<?php echo $sdata;?>"</h4>
@@ -132,10 +135,10 @@
                 <table class="table table-hover" id="tableDoctorManagement">
                     <thead>
                         <tr>
-                            <th scope="col">Especializacion</th>
-                            <th scope="col">Nombre</th>
+                            <th scope="col">Nombre del paciente</th>
                             <th scope="col">Telefono</th>
-                            <th scope="col">Creacion</th>
+                            <th scope="col">Genero del paciente</th>
+                            <th scope="col">Dia de creacion</th>
                             <th scope="col">Ultimo upd.</th>
                             <th scope="col">Acciones</th>
                         </tr>
@@ -143,7 +146,8 @@
                     <tbody>
                         <!--specialization like '%$sdata%'||-->
                         <?php
-                            $sql=mysqli_query($con,"select * from doctors where doctorName like '%$sdata%'|| specilization like '%$sdata%'|| contactno like '%$sdata%'");
+                            $docid=$_SESSION['id'];
+                            $sql=mysqli_query($con,"select * from tblpatient where Docid='$docid' && (PatientName like '%$sdata%'|| PatientContno like '%$sdata%')");
                             $num=mysqli_num_rows($sql);
                             if($num>0){
                                 $cnt=1;
@@ -152,12 +156,18 @@
                         ?>
 
                         <tr>
-                            <td class="hidden-xs"><?php echo $row['specilization'];?></td>
-                            <td><?php echo $row['doctorName'];?></td>
-                            <td><?php echo $row['contactno'];?></td>
-                            <td><?php echo $row['creationDate'];?></td>
-                            <td><?php echo $row['updationDate'];?></td>
-                            <!--<td><a href="view-patient.php?viewid=<php echo $row['ID'];?>"><i class="fa fa-eye"></i></a></td>-->
+                            <td
+                              class="hidden-xs"><?php echo $row['PatientName'];?>
+                              <a title="Editar perfil" href="editPatient.php?editid=<?php echo $row['ID'];?>"><i class="fa fa-edit"></i></a>
+                            </td>
+                            <td><?php echo $row['PatientContno'];?></td>
+                            <td><?php echo $row['PatientGender'];?></td>
+                            <td><?php echo $row['CreationDate'];?></td>
+                            <td><?php echo $row['UpdationDate'];?></td>
+                            <td>
+                              <a title="Ver ultimo registro" href="viewPatient.php?editid=<?php echo $row['ID'];?>"><i class="fa fa-edit"></i></a> || 
+                              <a title="Agregar registro" href="listPatients.php?viewid=<?php echo $row['ID'];?>"><i class="fa fa-eye"></i></a>
+                            </td>            
                         </tr>
 
                         <?php 
@@ -172,21 +182,67 @@
                     </tbody>
                 </table>
             </div>
-            
+
           </div>
         </div>
       </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-
-      <script src="../../resources/js/main.js"></script>
-      <!-- start: JavaScript Event Handlers for this page -->
-      <script src="../../resources/js/form-elements.js"></script>
-      <!--
-      <script>
-        jQuery(document).ready(function() {
-          Main.init();
-          FormElements.init();
-        });
-      </script>-->
     </body>
+    <!--
+      ESTO ES PARA VER  COMO SE HACE UNA VENTANA POPUP PARA QUE INGRESEN LOS DATOS DEL PACIENTE
+
+      <a href="javascript:void(0);" data-toggle="modal" data-target="#hireModal">Connect with Support Team</a>  
+    
+
+      <div class="modal fade in" id="hireModal" tabindex="-1" role="dialog" style="display: block;" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header 
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                          <span aria-hidden="true">×</span>
+                          <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title">
+                        Connect with our Support Team
+                    </h4>
+                </div>
+                
+                <!-- Modal Body 
+                <div class="modal-body hireUsModal">
+            <p style="font-size: 15px;font-family: cursive;">Do you want support for the script installation or customization? Submit your request for customization of our scripts, support for the existing web application, and new development service.</p>
+                  <p class="hireStatusMsg"></p>
+                    <form class="form-horizontal" role="form">
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hireName">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="hireName" placeholder="Your Name" required="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hireEmail">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="hireEmail" placeholder="Your Email" required="">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-2 control-label" for="hireMessage">Requirements</label>
+                        <div class="col-sm-10">
+                          <textarea class="form-control" id="hireMessage" placeholder="Your Requirements" rows="8"></textarea>
+                        </div>
+                      </div>
+                                      </form>
+            <p style="font-size: 14px;font-style: italic;margin-bottom: 0;">You can connect with the support team directly via email at <b>support@codexworld.com</b> for any inquiry/help.</p>
+                </div>
+                
+                <!-- Modal Footer 
+                <div class="modal-footer" style="margin-top: 0;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitHireRequest();" id="submitHireRequestBtn">Submit</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    -->
 </html>
+

@@ -1,10 +1,6 @@
 <?php
-  session_start();
   error_reporting(0);
   include('config.php');
-  include('checklogin.php');
-  check_login();
-
   if(isset($_POST['submit'])){	
     
     $docspecialization=$_POST['doctorSpecialization'];
